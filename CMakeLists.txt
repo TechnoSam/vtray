@@ -13,11 +13,33 @@ find_package(Qt5 COMPONENTS Gui REQUIRED)
 
 # EDIT: add your (non-test) source files to this list
 set(src
-  
+  color.hpp color.cpp
+  vec3.hpp vec3.cpp
+  ray.hpp ray.cpp
+  object.hpp object.cpp
+  sphere.hpp sphere.cpp
+  plane.hpp plane.cpp
+  light.hpp light.cpp
+  camera.hpp camera.cpp
+  scene.hpp scene.cpp
+  ray_tracer.hpp ray_tracer.cpp
   )
 
 # EDIT: add any additional test source files to this list
-set(test_src unittests.cpp)
+set(test_src 
+    catch.hpp
+	unittests.cpp
+	test_color.cpp
+	test_vec3.cpp
+	test_ray.cpp
+	test_object.cpp
+	test_sphere.cpp
+	test_plane.cpp
+	test_light.cpp
+	test_camera.cpp
+	test_scene.cpp
+	test_ray_tracer.cpp
+    )
 
 # You should not need to edit below this line
 #-----------------------------------------------------------------------
