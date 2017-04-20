@@ -1,3 +1,38 @@
 // File: camera.hpp
 // Author: Samuel McFalls
 // Description: Defines the Camera class
+
+#ifndef CAMERA_H
+#define CAMERA_H
+
+#include "plane.hpp"
+#include "vec3.hpp"
+#include "ray.hpp"
+
+class Camera {
+
+public:
+
+	Camera();
+
+	Camera(Plane viewCon, Vec3 focusCon, double sizeXCon, double sizeYCon,
+		double resXCon, double resYCon);
+
+	double getSizeX();
+
+	double getSizeY();
+
+	Ray pixelRay(double x, double y);
+
+private:
+
+	Plane view;
+	Vec3 focus;
+	double sizeX;
+	double sizeY;
+	double resX;
+	double resY;
+
+};
+
+#endif
