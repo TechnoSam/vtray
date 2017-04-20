@@ -32,7 +32,6 @@ set(test_src
 	test_color.cpp
 	test_vec3.cpp
 	test_ray.cpp
-	test_object.cpp
 	test_sphere.cpp
 	test_plane.cpp
 	test_light.cpp
