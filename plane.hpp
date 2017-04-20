@@ -2,6 +2,9 @@
 // Author: Samuel McFalls
 // Description: Defines the Plane class
 
+#ifndef PLANE_H
+#define PLANE_H
+
 #include "object.hpp"
 
 class Plane : public Object {
@@ -16,6 +19,7 @@ public:
 
 	Vec3 getCenter();
 
+	// https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-plane-and-ray-disk-intersection
 	Vec3 intersectedBy(Ray ray);
 
 private:
@@ -24,3 +28,5 @@ private:
 	Vec3 center;
 
 };
+
+#endif
