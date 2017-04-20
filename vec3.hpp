@@ -56,6 +56,11 @@ public:
 	//         false otherwise
 	bool operator==(const Vec3 &rhs);
 
+	// Compares two vectors
+	// @return false if two vectors have the same x, y, and z values,
+	//         true otherwise
+	bool operator!=(const Vec3 &rhs);
+
 	// Overloaded Add-Assignment operator
 	// Adds the components individually
 	Vec3& operator+=(const Vec3 &rhs);
@@ -129,6 +134,10 @@ Vec3 operator+(Vec3 lhs, double rhs);
 // Overloaded Add operator
 // Adds lhs to each component
 Vec3 operator+(double lhs, const Vec3 &rhs);
+
+// Overloaded Subtract operator
+// Adds the components individually
+Vec3 operator-(Vec3 lhs, const Vec3 &rhs);
 
 // Overloaded Subtract operator
 // Subtracts rhs from each component
