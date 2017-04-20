@@ -2,6 +2,9 @@
 // Author: Samuel McFalls
 // Description: Defines the Vec3 class. Geometric 3D vector.
 
+#ifndef VEC3_H
+#define VEC3_H
+
 class Vec3 {
 
 public:
@@ -45,7 +48,7 @@ public:
 
 	// Calculates the normalized vector as v/mag(v) where v is the vector
 	// @return The normalized vector
-	Vec3& normalize();
+	Vec3& normalize() const;
 
 	// Calculates the dot product with the vector and another
 	// @param rhs The vector to take the dot product with
@@ -170,3 +173,5 @@ Vec3 operator/(Vec3 lhs, int rhs);
 // Overloaded Divide operator
 // Divides each component by rhs
 Vec3 operator/(Vec3 lhs, double rhs);
+
+#endif

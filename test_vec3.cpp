@@ -45,9 +45,12 @@ TEST_CASE("Tests normalizing a Vec3", "[vec3]") {
 	Vec3 vec2 = Vec3(1 / sqrt(3), 1 / sqrt(3), 1 / sqrt(3));
 	Vec3 vec3 = Vec3(2 / sqrt(3), 2 / sqrt(3), 2 / sqrt(3));
 
-	REQUIRE(vec1.normalize() == Vec3(0, 0, 0));
-	REQUIRE(vec2.normalize() == Vec3(1 / sqrt(3), 1 / sqrt(3), 1 / sqrt(3)));
-	REQUIRE(vec3.normalize() == Vec3(1 / sqrt(3), 1 / sqrt(3), 1 / sqrt(3)));
+	Vec3 test = vec1.normalize();
+	REQUIRE(test == Vec3(0, 0, 0));
+	test = vec2.normalize();
+	REQUIRE(test == Vec3(1 / sqrt(3), 1 / sqrt(3), 1 / sqrt(3)));
+	test = vec3.normalize();
+	REQUIRE(test == Vec3(1 / sqrt(3), 1 / sqrt(3), 1 / sqrt(3)));
 
 }
 
@@ -56,8 +59,8 @@ TEST_CASE("Tests the dot product of Vec3s", "[vec3]") {
 	Vec3 vec1 = Vec3(1, 2, 3);
 	Vec3 vec2 = Vec3(4, 5, 6);
 
-	REQUIRE(vec1.dot(vec2) == 34);
-	REQUIRE(vec2.dot(vec1) == 34);
+	REQUIRE(vec1.dot(vec2) == 32);
+	REQUIRE(vec2.dot(vec1) == 32);
 
 }
 
