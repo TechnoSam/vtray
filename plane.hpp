@@ -10,7 +10,7 @@ public:
 
 	Plane();
 
-	Plane(Color colorCon, double lambertCon, Vec3 centerCon, double radiusCon);
+	Plane(Color colorCon, double lambertCon, Vec3 centerCon, Vec3 normalCon);
 
 	Vec3 getNormal();
 
