@@ -11,6 +11,14 @@ class Sphere : public Object {
 
 public:
 
+	Sphere();
+
+	Sphere(Color colorCon, double lambertCon, Vec3 centerCon, double radiusCon);
+
+	Vec3 getCenter();
+
+	double getRadius();
+
 	Vec3 intersectedBy(Ray ray);
 
 private:

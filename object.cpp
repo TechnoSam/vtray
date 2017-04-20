@@ -22,3 +22,11 @@ double Object::getLambert() {
 	return lambert;
 
 }
+
+Vec3 Object::intersectedBy(Ray ray) {
+
+	return Vec3(std::numeric_limits<double>::infinity(), 
+	            std::numeric_limits<double>::infinity(),
+	            std::numeric_limits<double>::infinity());
+
+}
