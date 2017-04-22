@@ -22,7 +22,7 @@ public:
 
 	double getSizeY();
 
-	Ray pixelRay(double x, double y);
+	Ray pixelRay(int x, int y);
 
 private:
 

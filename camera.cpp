@@ -53,7 +53,7 @@ double Camera::getSizeY() {
 
 }
 
-Ray Camera::pixelRay(double x, double y) {
+Ray Camera::pixelRay(int x, int y) {
 
 	Vec3 origin = focus;
 
