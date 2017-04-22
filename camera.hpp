@@ -15,7 +15,7 @@ public:
 
 	Camera();
 
-	Camera(Plane viewCon, Vec3 focusCon, double sizeXCon, double sizeYCon,
+	Camera(Plane viewCon, double focusCon, double sizeXCon, double sizeYCon,
 		double resXCon, double resYCon);
 
 	double getSizeX();
