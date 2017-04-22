@@ -34,6 +34,18 @@ Vec3 Plane::getCenter() {
 
 }
 
+void Plane::setNormal(Vec3 normalSet) {
+
+	normal = normalSet;
+
+}
+
+void Plane::setCenter(Vec3 centerSet) {
+
+	center = centerSet;
+
+}
+
 Vec3 Plane::intersectedBy(Ray ray) {
 
 	Vec3 n = normal.normalize();

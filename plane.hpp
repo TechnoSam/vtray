@@ -19,6 +19,10 @@ public:
 
 	Vec3 getCenter();
 
+	void setNormal(Vec3 normalSet);
+
+	void setCenter(Vec3 centerSet);
+
 	// https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-plane-and-ray-disk-intersection
 	Vec3 intersectedBy(Ray ray);
 

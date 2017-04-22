@@ -32,6 +32,8 @@ private:
 	double sizeY;
 	double resX;
 	double resY;
+	double startX;
+	double startY;
 
 };
 
