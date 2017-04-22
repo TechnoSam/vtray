@@ -18,6 +18,10 @@ public:
 
 	Scene();
 
+	double getCameraX();
+
+	double getCameraY();
+
 	void setCamera(Camera cameraSet);
 
 	void addObject(Object * obj);
