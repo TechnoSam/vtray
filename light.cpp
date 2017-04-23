@@ -29,13 +29,13 @@ void Light::setIntensity(double intensitySet) {
 
 }
 
-Vec3 Light::getLocation() {
+Vec3 Light::getLocation() const {
 
 	return location;
 
 }
 
-double Light::getIntensity() {
+double Light::getIntensity() const {
 
 	return intensity;
 

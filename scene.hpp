@@ -18,11 +18,11 @@ public:
 
 	Scene();
 
-	double getCameraX();
+	double getCameraX() const;
 
-	double getCameraY();
+	double getCameraY() const;
 
-	void setCamera(Camera cameraSet);
+	void setCamera(const Camera &cameraSet);
 
 	void addObject(Object * obj);
 
@@ -32,7 +32,7 @@ public:
 
 	void addLights(std::vector<Light> lights);
 
-	Color pixelByTrace(int x, int y);
+	Color pixelByTrace(int x, int y) const;
 
 private:
 

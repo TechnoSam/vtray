@@ -11,19 +11,19 @@ Object::Object() {
 
 }
 
-Color Object::getColor() {
+Color Object::getColor() const {
 
 	return color;
 
 }
 
-double Object::getLambert() {
+double Object::getLambert() const {
 
 	return lambert;
 
 }
 
-Vec3 Object::intersectedBy(Ray ray) {
+Vec3 Object::intersectedBy(Ray ray) const {
 
 	return Vec3(std::numeric_limits<double>::infinity(), 
 	            std::numeric_limits<double>::infinity(),

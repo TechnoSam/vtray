@@ -10,19 +10,19 @@ Scene::Scene() {
 
 }
 
-double Scene::getCameraX() {
+double Scene::getCameraX() const {
 
 	return camera.getSizeX();
 
 }
 
-double Scene::getCameraY() {
+double Scene::getCameraY() const {
 
 	return camera.getSizeY();
 
 }
 
-void Scene::setCamera(Camera cameraSet) {
+void Scene::setCamera(const Camera &cameraSet) {
 
 	camera = cameraSet;
 
@@ -58,7 +58,7 @@ void Scene::addLights(std::vector<Light> lights) {
 
 }
 
-Color Scene::pixelByTrace(int x, int y) {
+Color Scene::pixelByTrace(int x, int y) const {
 
 	Ray primary = camera.pixelRay(x, y);
 
@@ -85,7 +85,7 @@ Color Scene::pixelByTrace(int x, int y) {
 	}
 
 	//for (auto it = lights.begin(); it != lights.end; it++) {
-	for (auto& it : lights) {
+	for (auto it : lights) {
 		Ray shadow = Ray(intersection, (it).getLocation());
 		double scale = intersection.dot((it).getLocation()) * obj->getLambert();
 		pixelColor += scale * (it).getIntensity() * obj->getColor();

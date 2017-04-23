@@ -96,8 +96,6 @@ Scene sceneFromJson(const QJsonObject &json) {
 
 	Scene scene = Scene();
 
-	bool ok;
-
 	// Parse the camera
 	// Top level keys
 	QJsonValue camVal = json.value("camera");

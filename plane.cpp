@@ -13,7 +13,7 @@ Plane::Plane() {
 
 }
 
-Plane::Plane(Color colorCon, double lambertCon, Vec3 centerCon, Vec3 normalCon) {
+Plane::Plane(const Color &colorCon, double lambertCon, const Vec3 &centerCon, const Vec3 &normalCon) {
 
 	color = colorCon;
 	lambert = lambertCon;
@@ -22,13 +22,13 @@ Plane::Plane(Color colorCon, double lambertCon, Vec3 centerCon, Vec3 normalCon) 
 
 }
 
-Vec3 Plane::getNormal() {
+Vec3 Plane::getNormal() const {
 
 	return normal;
 
 }
 
-Vec3 Plane::getCenter() {
+Vec3 Plane::getCenter() const {
 
 	return center;
 
@@ -46,7 +46,7 @@ void Plane::setCenter(Vec3 centerSet) {
 
 }
 
-Vec3 Plane::intersectedBy(Ray ray) {
+Vec3 Plane::intersectedBy(Ray ray) const {
 
 	Vec3 n = normal.normalize();
 	Vec3 l = ray.getDirection().normalize();

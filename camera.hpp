@@ -17,14 +17,14 @@ public:
 
 	Camera();
 
-	Camera(Plane viewCon, double focusCon, double sizeXCon, double sizeYCon,
+	Camera(const Plane &viewCon, double focusCon, double sizeXCon, double sizeYCon,
 		double resXCon, double resYCon);
 
-	double getSizeX();
+	double getSizeX() const;
 
-	double getSizeY();
+	double getSizeY() const;
 
-	Ray pixelRay(int x, int y);
+	Ray pixelRay(int x, int y) const;
 
 private:
 

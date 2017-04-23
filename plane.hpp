@@ -13,18 +13,18 @@ public:
 
 	Plane();
 
-	Plane(Color colorCon, double lambertCon, Vec3 centerCon, Vec3 normalCon);
+	Plane(const Color &colorCon, double lambertCon, const Vec3 &centerCon, const Vec3 &normalCon);
 
-	Vec3 getNormal();
+	Vec3 getNormal() const;
 
-	Vec3 getCenter();
+	Vec3 getCenter() const;
 
 	void setNormal(Vec3 normalSet);
 
 	void setCenter(Vec3 centerSet);
 
 	// https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-plane-and-ray-disk-intersection
-	Vec3 intersectedBy(Ray ray);
+	Vec3 intersectedBy(Ray ray) const;
 
 private:
 

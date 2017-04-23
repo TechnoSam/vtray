@@ -17,7 +17,7 @@ Camera::Camera() {
 
 }
 
-Camera::Camera(Plane viewCon, double focusCon, double sizeXCon, double sizeYCon,
+Camera::Camera(const Plane &viewCon, double focusCon, double sizeXCon, double sizeYCon,
 	double resXCon, double resYCon) {
 
 	view = viewCon;
@@ -36,19 +36,19 @@ Camera::Camera(Plane viewCon, double focusCon, double sizeXCon, double sizeYCon,
 
 }
 
-double Camera::getSizeX() {
+double Camera::getSizeX() const {
 
 	return sizeX;
 
 }
 
-double Camera::getSizeY() {
+double Camera::getSizeY() const {
 
 	return sizeY;
 
 }
 
-Ray Camera::pixelRay(int x, int y) {
+Ray Camera::pixelRay(int x, int y) const {
 
 	Vec3 origin = focus;
 

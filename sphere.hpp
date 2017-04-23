@@ -13,13 +13,13 @@ public:
 
 	Sphere();
 
-	Sphere(Color colorCon, double lambertCon, Vec3 centerCon, double radiusCon);
+	Sphere(const Color &colorCon, double lambertCon, const Vec3 &centerCon, double radiusCon);
 
-	Vec3 getCenter();
+	Vec3 getCenter() const;
 
-	double getRadius();
+	double getRadius() const ;
 
-	Vec3 intersectedBy(Ray ray);
+	Vec3 intersectedBy(Ray ray) const;
 
 private:
 

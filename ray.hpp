@@ -15,11 +15,11 @@ public:
 
 	Ray(const Vec3 &origCon, const Vec3 &destCon);
 
-	Vec3 getOrigin();
+	Vec3 getOrigin() const;
 
-	Vec3 getDestination();
+	Vec3 getDestination() const;
 
-	Vec3 getDirection();
+	Vec3 getDirection() const;
 
 private:
 

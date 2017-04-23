@@ -20,13 +20,13 @@ public:
 
 	RayTracer();
 
-	RayTracer(Scene sceneCon);
+	RayTracer(const Scene &sceneCon);
 
-	void setScene(Scene sceneSet);
+	void setScene(const Scene &sceneSet);
 
-	Scene getScene();
+	Scene getScene() const;
 
-	ImageChunk renderChunk(int startX, int endX, int startY, int endY);
+	ImageChunk renderChunk(int startX, int endX, int startY, int endY) const;
 
 private:
 

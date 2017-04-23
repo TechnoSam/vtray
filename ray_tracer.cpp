@@ -10,26 +10,26 @@ RayTracer::RayTracer() {
 
 }
 
-RayTracer::RayTracer(Scene sceneCon) {
+RayTracer::RayTracer(const Scene &sceneCon) {
 
 	scene = sceneCon;
 
 }
 
-void RayTracer::setScene(Scene sceneSet) {
+void RayTracer::setScene(const Scene &sceneSet) {
 
 	scene = sceneSet;
 
 }
 
-Scene RayTracer::getScene() {
+Scene RayTracer::getScene() const {
 
 	return scene;
 
 }
 
 RayTracer::ImageChunk RayTracer::renderChunk(int startX, int endX, 
-	int startY, int endY) {
+	int startY, int endY) const {
 
 	if (startX < 0) {
 		throw std::logic_error("start X pixel out of bounds");

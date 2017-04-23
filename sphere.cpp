@@ -13,7 +13,7 @@ Sphere::Sphere() {
 
 }
 
-Sphere::Sphere(Color colorCon, double lambertCon, Vec3 centerCon, 
+Sphere::Sphere(const Color &colorCon, double lambertCon, const Vec3 &centerCon, 
                double radiusCon) {
 
 	color = colorCon;
@@ -23,19 +23,19 @@ Sphere::Sphere(Color colorCon, double lambertCon, Vec3 centerCon,
 
 }
 
-Vec3 Sphere::getCenter() {
+Vec3 Sphere::getCenter() const {
 
 	return center;
 
 }
 
-double Sphere::getRadius() {
+double Sphere::getRadius() const {
 
 	return radius;
 
 }
 
-Vec3 Sphere::intersectedBy(Ray ray) {
+Vec3 Sphere::intersectedBy(Ray ray) const {
 
 	Vec3 L = ray.getOrigin() - center;
 	double a = ray.getDirection().dot(ray.getDirection());

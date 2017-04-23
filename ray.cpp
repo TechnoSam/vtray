@@ -20,19 +20,19 @@ Ray::Ray(const Vec3 &origCon, const Vec3 &destCon) {
 
 }
 
-Vec3 Ray::getOrigin() {
+Vec3 Ray::getOrigin() const {
 
 	return origin;
 
 }
 
-Vec3 Ray::getDestination() {
+Vec3 Ray::getDestination() const {
 
 	return destination;
 
 }
 
-Vec3 Ray::getDirection() {
+Vec3 Ray::getDirection() const {
 
 	return direction;
 

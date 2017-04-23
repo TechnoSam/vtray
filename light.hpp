@@ -19,9 +19,9 @@ public:
 
 	void setIntensity(double intensitySet);
 
-	Vec3 getLocation();
+	Vec3 getLocation() const;
 
-	double getIntensity();
+	double getIntensity() const;
 
 private:
 
