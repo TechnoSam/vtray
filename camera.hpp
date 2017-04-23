@@ -9,6 +9,8 @@
 #include "vec3.hpp"
 #include "ray.hpp"
 
+#include <math.h>
+
 class Camera {
 
 public:

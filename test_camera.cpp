@@ -29,8 +29,18 @@ TEST_CASE("Tests the camera pixel ray generation", "[camera]") {
 
 	Ray ray1 = cam1.pixelRay(0, 0);
 	REQUIRE(ray1.getOrigin() == Vec3(0, 0, -10));
+	REQUIRE(ray1.getDestination().getX() - (-1.275) < 1e-9);
+	REQUIRE(ray1.getDestination().getY() - (-1.275) < 1e-9);
+	REQUIRE(ray1.getDestination().getZ() - (0) < 1e-9);
 
-	Ray ray2 = cam2.pixelRay(0, 0);
-	REQUIRE(ray2.getOrigin() == Vec3());
+	Ray ray2 = cam1.pixelRay(255, 255);
+	REQUIRE(ray1.getOrigin() == Vec3(0, 0, -10));
+	REQUIRE(ray1.getDestination().getX() - (1.275) < 1e-9);
+	REQUIRE(ray1.getDestination().getY() - (1.275) < 1e-9);
+	REQUIRE(ray1.getDestination().getZ() - (0) < 1e-9);
+
+	// The testing here is really hard, so I've elected to just test visually
+	//Ray ray3 = cam2.pixelRay(0, 0);
+	//REQUIRE(ray3.getOrigin() == Vec3());
 
 }

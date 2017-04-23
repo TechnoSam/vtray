@@ -54,6 +54,10 @@ public:
 	// @param rhs The vector to take the dot product with
 	double dot(const Vec3 &rhs) const;
 
+	// Calculates the cross product with the vector and another
+	// @param rhs The vector to take the cross product with
+	Vec3 cross(const Vec3 &rhs) const;
+
 	// Compares two vectors
 	// @return true if two vectors have the same x, y, and z values,
 	//         false otherwise

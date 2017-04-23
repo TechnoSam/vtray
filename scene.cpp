@@ -36,8 +36,9 @@ void Scene::addObject(Object * obj) {
 
 void Scene::addObjects(std::vector<Object *> objs) {
 
-	for (auto it = objs.begin(); it != objs.end; it++) {
-		addObject(*it);
+	//for (auto & it = objs.begin(); it != objs.end; it++) {
+	for (auto& it : objs) {
+		addObject(it);
 	}
 
 }
@@ -50,8 +51,9 @@ void Scene::addLight(Light light) {
 
 void Scene::addLights(std::vector<Light> lights) {
 
-	for (auto it = lights.begin(); it != lights.end; it++) {
-		addLight(*it);
+	//for (auto it = lights.begin(); it != lights.end; it++) {
+	for (auto& it : lights) {
+		addLight(it);
 	}
 
 }
@@ -67,8 +69,9 @@ Color Scene::pixelByTrace(int x, int y) {
 	Vec3 intersection;
 	Object * obj;
 
-	for (auto it = objects.begin(); it != objects.end; it++) {
-		obj = (*it);
+	//for (auto it = objects.begin(); it != objects.end; it++) {
+	for (auto& it : objects) {
+		obj = (it);
 		intersection = obj->intersectedBy(primary);
 		if (intersection != inf) {
 			break;
@@ -81,10 +84,11 @@ Color Scene::pixelByTrace(int x, int y) {
 		return pixelColor;
 	}
 
-	for (auto it = lights.begin(); it != lights.end; it++) {
-		Ray shadow = Ray(intersection, (*it).getLocation());
-		double scale = intersection.dot((*it).getLocation()) * obj->getLambert();
-		pixelColor += scale * (*it).getIntensity() * obj->getColor();
+	//for (auto it = lights.begin(); it != lights.end; it++) {
+	for (auto& it : lights) {
+		Ray shadow = Ray(intersection, (it).getLocation());
+		double scale = intersection.dot((it).getLocation()) * obj->getLambert();
+		pixelColor += scale * (it).getIntensity() * obj->getColor();
 	}
 
 	return pixelColor;
