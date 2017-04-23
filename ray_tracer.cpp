@@ -37,10 +37,10 @@ RayTracer::ImageChunk RayTracer::renderChunk(int startX, int endX,
 	if (startY < 0) {
 		throw std::logic_error("start Y pixel out of bounds");
 	}
-	if (startX > scene.getCameraX()) {
+	if (startX > scene.getCameraX() - 1) {
 		throw std::logic_error("start X pixel out of bounds");
 	}
-	if (startY > scene.getCameraY()) {
+	if (startY > scene.getCameraY() - 1) {
 		throw std::logic_error("start Y pixel out of bounds");
 	}
 
