@@ -132,33 +132,30 @@ Scene sceneFromJson(const QJsonObject &json) {
 	if (camCenXVal.isUndefined()) {
 		throw std::logic_error("Key \"x\" does not exist");
 	}
-	qDebug() << camCenXVal.toString("q");
-	qDebug() << camCenXVal.toDouble();
-	qDebug() << camCenXVal.toInt(-1);
-	double camCenX = camCenXVal.toString("q").toDouble(&ok);
-	if (!ok) {
+	double camCenX = camCenXVal.toDouble(-1);
+	if (!camCenXVal.isDouble()) {
 		throw std::logic_error("x is not a double");
 	}
 	QJsonValue camCenYVal = camCenObj.value("y");
 	if (camCenYVal.isUndefined()) {
 		throw std::logic_error("Key \"y\" does not exist");
 	}
-	double camCenY = camCenYVal.toString("q").toDouble(&ok);
-	if (!ok) {
+	double camCenY = camCenYVal.toDouble();
+	if (!camCenYVal.isDouble()) {
 		throw std::logic_error("y is not a double");
 	}
 	QJsonValue camCenZVal = camCenObj.value("z");
 	if (camCenZVal.isUndefined()) {
 		throw std::logic_error("Key \"z\" does not exist");
 	}
-	double camCenZ = camCenZVal.toString("q").toDouble(&ok);
-	if (!ok) {
+	double camCenZ = camCenZVal.toDouble();
+	if (!camCenZVal.isDouble()) {
 		throw std::logic_error("z is not a double");
 	}
 
 	// Camera Focus
-	double camFocus = camFocusVal.toString("q").toDouble(&ok);
-	if (!ok) {
+	double camFocus = camFocusVal.toDouble();
+	if (!camFocusVal.isDouble()) {
 		throw std::logic_error("focus is not a double");
 	}
 
@@ -168,52 +165,52 @@ Scene sceneFromJson(const QJsonObject &json) {
 	if (camNormXVal.isUndefined()) {
 		throw std::logic_error("Key \"x\" does not exist");
 	}
-	double camNormX = camNormXVal.toString("q").toDouble(&ok);
-	if (!ok) {
+	double camNormX = camNormXVal.toDouble();
+	if (!camNormXVal.isDouble()) {
 		throw std::logic_error("x is not a double");
 	}
 	QJsonValue camNormYVal = camNormObj.value("y");
 	if (camNormYVal.isUndefined()) {
 		throw std::logic_error("Key \"y\" does not exist");
 	}
-	double camNormY = camNormYVal.toString("q").toDouble(&ok);
-	if (!ok) {
+	double camNormY = camNormYVal.toDouble();
+	if (!camNormYVal.isDouble()) {
 		throw std::logic_error("y is not a double");
 	}
 	QJsonValue camNormZVal = camNormObj.value("z");
 	if (camNormZVal.isUndefined()) {
 		throw std::logic_error("Key \"z\" does not exist");
 	}
-	double camNormZ = camNormZVal.toString("q").toDouble();
-	if (!ok) {
+	double camNormZ = camNormZVal.toDouble();
+	if (!camNormZVal.isDouble()) {
 		throw std::logic_error("z is not a double");
 	}
 
 	// Camera Resolution
 	QJsonArray camResArr = camResVal.toArray({});
-	if (camResArr.isEmpty() || camResArr.size() > 2) {
+	if (!camResVal.isArray() || camResArr.size() != 2) {
 		throw std::logic_error("Resolution is not appropriate list");
 	}
-	double camResX = camResArr[0].toString("q").toDouble(&ok);
-	if (!ok || camResX < 0) {
+	double camResX = camResArr[0].toDouble();
+	if (!camResArr[0].isDouble() || camResX < 0) {
 		throw std::logic_error("Resolution x is not a positive double");
 	}
-	double camResY = camResArr[1].toString("q").toDouble(&ok);
-	if (!ok || camResY < 0) {
+	double camResY = camResArr[1].toDouble();
+	if (!camResArr[1].isDouble() || camResY < 0) {
 		throw std::logic_error("Resolution y is not a positive double");
 	}
 
 	// Camera Size
 	QJsonArray camSizeArr = camSizeVal.toArray({});
-	if (camSizeArr.isEmpty() || camSizeArr.size() > 2) {
+	if (!camSizeVal.isArray() || camSizeArr.size() != 2) {
 		throw std::logic_error("Size is not appropriate list");
 	}
-	int camSizeX = camSizeArr[0].toString("q").toInt(&ok);
-	if (!ok || camSizeX < 0) {
+	int camSizeX = camSizeArr[0].toInt(-1);
+	if (camSizeX < 0) {
 		throw std::logic_error("Size x is not a positive int");
 	}
-	int camSizeY = camSizeArr[1].toString("q").toInt(&ok);
-	if (!ok || camSizeY < 0) {
+	int camSizeY = camSizeArr[1].toInt(-1);
+	if (camSizeY < 0) {
 		throw std::logic_error("Size y is not a positive int");
 	}
 
@@ -231,7 +228,7 @@ Scene sceneFromJson(const QJsonObject &json) {
 		throw std::logic_error("Key \"lights\" does not exist");
 	}
 	QJsonArray lArr = lVal.toArray({});
-	if (lArr.isEmpty()) {
+	if (!lVal.isArray()) {
 		throw std::logic_error("Invalid lights list");
 	}
 	for (int li = 0; li < lArr.size(); li++) {
@@ -242,8 +239,8 @@ Scene sceneFromJson(const QJsonObject &json) {
 		if (intenVal.isUndefined()) {
 			throw std::logic_error("Key \"intensity\" does not exist");
 		}
-		double inten = intenVal.toString("q").toDouble(&ok);
-		if (!ok || inten < 0) {
+		double inten = intenVal.toDouble();
+		if (!intenVal.isDouble() || inten < 0) {
 			throw std::logic_error("Intensity is not a positive double");
 		}
 
@@ -257,24 +254,24 @@ Scene sceneFromJson(const QJsonObject &json) {
 		if (xLocVal.isUndefined()) {
 			throw std::logic_error("Key \"x\" does not exist");
 		}
-		double xLoc = xLocVal.toString("q").toDouble(&ok);
-		if (!ok) {
+		double xLoc = xLocVal.toDouble();
+		if (!xLocVal.isDouble()) {
 			throw std::logic_error("x is not a double");
 		}
 		QJsonValue yLocVal = locObj.value("y");
 		if (yLocVal.isUndefined()) {
 			throw std::logic_error("Key \"y\" does not exist");
 		}
-		double yLoc = yLocVal.toString("q").toDouble(&ok);
-		if (!ok) {
+		double yLoc = yLocVal.toDouble();
+		if (!yLocVal.isDouble()) {
 			throw std::logic_error("y is not a double");
 		}
 		QJsonValue zLocVal = locObj.value("z");
 		if (zLocVal.isUndefined()) {
 			throw std::logic_error("Key \"z\" does not exist");
 		}
-		double zLoc = zLocVal.toString("q").toDouble(&ok);
-		if (!ok) {
+		double zLoc = zLocVal.toDouble();
+		if (!zLocVal.isDouble()) {
 			throw std::logic_error("z is not a double");
 		}
 
@@ -289,7 +286,7 @@ Scene sceneFromJson(const QJsonObject &json) {
 		throw std::logic_error("Key \"objects\" does not exist");
 	}
 	QJsonArray objArr = objVal.toArray({});
-	if (objArr.isEmpty()) {
+	if (!objVal.isArray()) {
 		throw std::logic_error("Invalid objects list");
 	}
 	for (int oi = 0; oi < objArr.size(); oi++) {
@@ -306,24 +303,24 @@ Scene sceneFromJson(const QJsonObject &json) {
 		if (rVal.isUndefined()) {
 			throw std::logic_error("Key \"r\" does not exist");
 		}
-		int r = rVal.toString("q").toInt(&ok);
-		if (!ok || r < 0 || r > 255) {
+		int r = rVal.toInt(-1);
+		if (r < 0 || r > 255) {
 			throw std::logic_error("r value is not an int [0, 255]");
 		}
-		QJsonValue gVal = colorObj.value("q");
+		QJsonValue gVal = colorObj.value("g");
 		if (gVal.isUndefined()) {
 			throw std::logic_error("Key \"g\" does not exist");
 		}
-		int g = gVal.toString("q").toInt(&ok);
-		if (!ok || g < 0 || g > 255) {
+		int g = gVal.toInt(-1);
+		if (g < 0 || g > 255) {
 			throw std::logic_error("g value is not an int [0, 255]");
 		}
 		QJsonValue bVal = colorObj.value("b");
 		if (bVal.isUndefined()) {
 			throw std::logic_error("Key \"b\" does not exist");
 		}
-		int b = bVal.toString("q").toInt(&ok);
-		if (!ok || b < 0 || b > 255) {
+		int b = bVal.toInt(-1);
+		if (b < 0 || b > 255) {
 			throw std::logic_error("b value is not an int [0, 255]");
 		}
 
@@ -333,14 +330,9 @@ Scene sceneFromJson(const QJsonObject &json) {
 		if (lamVal.isUndefined()) {
 			throw std::logic_error("Key \"lambert\" does not exist");
 		}
-		double lam = lamVal.toString("q").toDouble(&ok);
-		if (!ok || lam < 0 || lam > 1) {
+		double lam = lamVal.toDouble();
+		if (!lamVal.isDouble() || lam < 0 || lam > 1) {
 			throw std::logic_error("lambert value is not a double [0, 1]");
-		}
-
-		QJsonValue typeVal = obj.value("type");
-		if (typeVal.isUndefined()) {
-			throw std::logic_error("Key \"type\" does not exist");
 		}
 
 		// Center
@@ -354,28 +346,32 @@ Scene sceneFromJson(const QJsonObject &json) {
 		if (cenXVal.isUndefined()) {
 			throw std::logic_error("Key \"x\" does not exist");
 		}
-		double cenX = cenXVal.toString("q").toDouble(&ok);
-		if (!ok) {
+		double cenX = cenXVal.toDouble();
+		if (!cenXVal.isDouble()) {
 			throw std::logic_error("x is not a double");
 		}
 		QJsonValue cenYVal = cenObj.value("y");
 		if (cenYVal.isUndefined()) {
 			throw std::logic_error("Key \"y\" does not exist");
 		}
-		double cenY = cenYVal.toString("q").toDouble(&ok);
-		if (!ok) {
+		double cenY = cenYVal.toDouble();
+		if (!cenYVal.isDouble()) {
 			throw std::logic_error("y is not a double");
 		}
 		QJsonValue cenZVal = cenObj.value("z");
 		if (cenZVal.isUndefined()) {
 			throw std::logic_error("Key \"z\" does not exist");
 		}
-		double cenZ = cenZVal.toString("q").toDouble(&ok);
-		if (!ok) {
+		double cenZ = cenZVal.toDouble();
+		if (!cenZVal.isDouble()) {
 			throw std::logic_error("z is not a double");
 		}
 
 		// Type
+		QJsonValue typeVal = obj.value("type");
+		if (typeVal.isUndefined()) {
+			throw std::logic_error("Key \"type\" does not exist");
+		}
 		QString type = typeVal.toString("q");
 		if (type == QString("sphere")) {
 			// Radius
@@ -383,8 +379,8 @@ Scene sceneFromJson(const QJsonObject &json) {
 			if (radVal.isUndefined()) {
 				throw std::logic_error("Key \"radius\" does not exist");
 			}
-			double rad = radVal.toString("q").toDouble(&ok);
-			if (!ok || rad < 0) {
+			double rad = radVal.toDouble(-1);
+			if (rad < 0) {
 				throw std::logic_error("Radius is not a positive double");
 			}
 
@@ -401,24 +397,24 @@ Scene sceneFromJson(const QJsonObject &json) {
 			if (normXVal.isUndefined()) {
 				throw std::logic_error("Key \"x\" does not exist");
 			}
-			double normX = normXVal.toString("q").toDouble(&ok);
-			if (!ok) {
+			double normX = normXVal.toDouble();
+			if (!normXVal.isDouble()) {
 				throw std::logic_error("x is not a double");
 			}
 			QJsonValue normYVal = normObject.value("y");
 			if (normYVal.isUndefined()) {
 				throw std::logic_error("Key \"y\" does not exist");
 			}
-			double normY = normYVal.toString("q").toDouble(&ok);
-			if (!ok) {
+			double normY = normYVal.toDouble();
+			if (!normYVal.isDouble()) {
 				throw std::logic_error("y is not a double");
 			}
 			QJsonValue normZVal = normObject.value("z");
 			if (normZVal.isUndefined()) {
 				throw std::logic_error("Key \"z\" does not exist");
 			}
-			double normZ = normZVal.toString("q").toDouble(&ok);
-			if (!ok) {
+			double normZ = normZVal.toDouble();
+			if (!normZVal.isDouble()) {
 				throw std::logic_error("z is not a double");
 			}
 
