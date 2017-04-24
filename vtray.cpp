@@ -215,8 +215,7 @@ Scene sceneFromJson(const QJsonObject &json) {
 
 	// Assemble the information
 	Camera camera = Camera(
-		Plane(Color(255, 255, 255), 1, Vec3(camCenX, camCenY, camCenZ), 
-			Vec3(camNormX, camNormY, camNormZ)), 
+		Vec3(camCenX, camCenY, camCenZ), Vec3(camNormX, camNormY, camNormZ), 
 		camFocus, camSizeX, camSizeY, camResX, camResY);
 
 	scene.setCamera(camera);
@@ -386,7 +385,7 @@ Scene sceneFromJson(const QJsonObject &json) {
 			// Assemble the info
 			Sphere sphere = Sphere(Color(r, g, b), lam, 
 				Vec3(cenX, cenY, cenZ), rad);
-			scene.addObject((Object *)&sphere);
+			scene.addSphere(sphere);
 		}
 		else if (type == QString("plane")) {
 			// Normal
@@ -419,7 +418,7 @@ Scene sceneFromJson(const QJsonObject &json) {
 
 			// Assemble
 			Plane plane = Plane(Color(r, g, b), lam, Vec3(cenX, cenY, cenZ), Vec3(normX, normY, normZ));
-			scene.addObject((Object *)&plane);
+			scene.addPlane(plane);
 		}
 		else {
 			throw std::logic_error("Unrecognized object type");

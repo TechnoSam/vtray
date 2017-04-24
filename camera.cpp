@@ -6,7 +6,8 @@
 
 Camera::Camera() {
 
-	view = Plane();
+	center = Vec3();
+	normal = Vec3();
 	focus = Vec3();
 	sizeX = 0;
 	sizeY = 0;
@@ -17,13 +18,13 @@ Camera::Camera() {
 
 }
 
-Camera::Camera(const Plane &viewCon, double focusCon, double sizeXCon, double sizeYCon,
+Camera::Camera(const Vec3 &cenCon, const Vec3 &normCon, double focusCon, double sizeXCon, double sizeYCon,
 	double resXCon, double resYCon) {
 
-	view = viewCon;
-	view.setNormal(view.getNormal().normalize());
+	center = cenCon;
+	normal = normCon.normalize();
 
-	focus = view.getCenter() - focusCon * view.getNormal();
+	focus = center - focusCon * normal;
 
 	sizeX = sizeXCon;
 	sizeY = sizeYCon;
@@ -59,11 +60,11 @@ Ray Camera::pixelRay(int x, int y) const {
 	Vec3 defaultNormal = Vec3(0, 0, 1);
 
 	// Now we can rotate the points to get the actual point
-	Vec3 axis = defaultNormal.cross(view.getNormal());
+	Vec3 axis = defaultNormal.cross(normal);
 
-	double dot = defaultNormal.dot(view.getNormal());
+	double dot = defaultNormal.dot(normal);
 	double len1 = defaultNormal.magnitude();
-	double len2 = view.getNormal().magnitude();
+	double len2 = normal.magnitude();
 	double theta = acos(dot / (len1 * len2));
 
 	double rotateX, rotateY, rotateZ;

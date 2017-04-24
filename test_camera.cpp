@@ -8,8 +8,8 @@
 TEST_CASE("Tests the camera constructors", "[camera]") {
 
 	Camera defaultCamera = Camera();
-	Camera customCamera = Camera(Plane(Color(255, 255, 255), 1, Vec3(1, 1, 1),
-		Vec3(0, 0, 1)), 10, 256, 256, 0.01, 0.01);
+	Camera customCamera = Camera(Vec3(1, 1, 1),
+		Vec3(0, 0, 1), 10, 256, 256, 0.01, 0.01);
 
 	REQUIRE(defaultCamera.getSizeX() == 0);
 	REQUIRE(defaultCamera.getSizeY() == 0);
@@ -21,11 +21,11 @@ TEST_CASE("Tests the camera constructors", "[camera]") {
 
 TEST_CASE("Tests the camera pixel ray generation", "[camera]") {
 
-	Camera cam1 = Camera(Plane(Color(255, 255, 255), 1, Vec3(0, 0, 0),
-		Vec3(0, 0, 1)), 10, 256, 256, 0.01, 0.01);
+	Camera cam1 = Camera(Vec3(0, 0, 0),
+		Vec3(0, 0, 1), 10, 256, 256, 0.01, 0.01);
 
-	Camera cam2 = Camera(Plane(Color(255, 255, 255), 1, Vec3(0, 0, 0),
-		Vec3(0, 1, 1)), 10, 256, 256, 0.01, 0.01);
+	Camera cam2 = Camera(Vec3(0, 0, 0),
+		Vec3(0, 1, 1), 10, 256, 256, 0.01, 0.01);
 
 	Ray ray1 = cam1.pixelRay(0, 0);
 	REQUIRE(ray1.getOrigin() == Vec3(0, 0, -10));

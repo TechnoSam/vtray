@@ -17,7 +17,7 @@ public:
 
 	Camera();
 
-	Camera(const Plane &viewCon, double focusCon, double sizeXCon, double sizeYCon,
+	Camera(const Vec3 &center, const Vec3 &normal, double focusCon, double sizeXCon, double sizeYCon,
 		double resXCon, double resYCon);
 
 	double getSizeX() const;
@@ -28,7 +28,8 @@ public:
 
 private:
 
-	Plane view;
+	Vec3 center;
+	Vec3 normal;
 	Vec3 focus;
 	double sizeX;
 	double sizeY;

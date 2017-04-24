@@ -17,6 +17,10 @@ public:
 
 	Object();
 
+	//Object(const Object& rhs) = delete;
+
+	//Object& operator=(const Object& rhs) = delete;
+
 	virtual Color getColor() const;
 
 	virtual double getLambert() const;
