@@ -46,15 +46,13 @@ void Plane::setCenter(Vec3 centerSet) {
 
 }
 
-Vec3 Plane::intersectedBy(Ray ray) const {
+double Plane::intersectedBy(Ray ray) const {
 
 	Vec3 n = normal.normalize();
 	Vec3 l = ray.getDirection().normalize();
 	double denominator = n.dot(l);
 
-	Vec3 inf = Vec3(std::numeric_limits<double>::infinity(),
-	                std::numeric_limits<double>::infinity(),
-	                std::numeric_limits<double>::infinity());
+	double inf = std::numeric_limits<double>::infinity();
 
 	if (std::abs(denominator) > 1e-6) {
 
@@ -62,7 +60,7 @@ Vec3 Plane::intersectedBy(Ray ray) const {
 		if (t <= 0) {
 			return inf;
 		}
-		return ray.getOrigin() + t * ray.getDirection();
+		return t;
 
 	}
 

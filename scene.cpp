@@ -10,40 +10,6 @@ Scene::Scene() {
 
 }
 
-/*Scene::~Scene() {
-
-	for (auto it = objects.begin(); it != objects.end(); ++it) {
-		delete (*it);
-	}
-	objects.clear();
-
-}
-
-Scene::Scene(const Scene& rhs) {
-
-	camera = rhs.camera;
-	lights = rhs.lights;
-
-	for (auto it = rhs.objects.begin(); it != rhs.objects.end(); ++it) {
-		objects.push_back(*it);
-	}
-
-}
-
-Scene& Scene::operator=(const Scene& rhs) {
-
-	camera = rhs.camera;
-	lights = rhs.lights;
-
-	objects.clear();
-	for (auto it = rhs.objects.begin(); it != rhs.objects.end(); ++it) {
-		objects.push_back(*it);
-	}
-
-	return *this;
-
-}*/
-
 double Scene::getCameraX() const {
 
 	return camera.getSizeX();
@@ -61,21 +27,6 @@ void Scene::setCamera(const Camera &cameraSet) {
 	camera = cameraSet;
 
 }
-
-/*void Scene::addObject(Object * obj) {
-
-	objects.push_back(obj);
-
-}
-
-void Scene::addObjects(std::vector<Object *> objs) {
-
-	//for (auto & it = objs.begin(); it != objs.end; it++) {
-	for (auto& it : objs) {
-		addObject(it);
-	}
-
-}*/
 
 void Scene::addSphere(Sphere sphere) {
 
@@ -97,7 +48,6 @@ void Scene::addLight(Light light) {
 
 void Scene::addLights(std::vector<Light> lights) {
 
-	//for (auto it = lights.begin(); it != lights.end; it++) {
 	for (auto& it : lights) {
 		addLight(it);
 	}
@@ -112,39 +62,42 @@ Color Scene::pixelByTrace(int x, int y) const {
 		std::numeric_limits<double>::infinity(),
 		std::numeric_limits<double>::infinity());
 
+	double intLoc;
+	double t = std::numeric_limits<double>::infinity();
 	Vec3 intersection;
 	Object * obj;
-	Sphere sphere;
 
-	//for (auto it = objects.begin(); it != objects.end; it++) {
-	//for (auto& it : objects) {
-	/*for (int i = 0; i < objects.size(); i++) {
-		obj = objects[i];
-		intersection = obj->intersectedBy(primary);
-		if (intersection != inf) {
-			break;
-		}
-	}*/
-
-	for (auto it = spheres.begin(); it != spheres.end(); ++it) {
-		sphere = *it;
-		intersection = sphere.intersectedBy(primary);
-		if (intersection != inf) {
-			break;
+	//for (auto it = spheres.begin(); it != spheres.end(); ++it) {
+	for (unsigned int i = 0; i < spheres.size(); i++) {
+		intLoc = spheres[i].intersectedBy(primary);
+		if (intLoc < t) {
+			obj = (Object *)&spheres[i];
+			t = intLoc;
 		}
 	}
 
+	for (unsigned int i = 0; i < planes.size(); i++) {
+		intLoc = planes[i].intersectedBy(primary);
+		if (intLoc < t) {
+			obj = (Object *)&planes[i];
+			t = intLoc;
+		}
+	}
+
+	intersection = primary.getOrigin() + t * primary.getDirection();
+
 	Color pixelColor = Color(0, 0, 0);
 
-	if (intersection == inf) {
+	if (t == std::numeric_limits<double>::infinity()) {
 		return pixelColor;
 	}
 
 	//for (auto it = lights.begin(); it != lights.end; it++) {
-	for (auto it : lights) {
-		Ray shadow = Ray(intersection, (it).getLocation());
-		double scale = intersection.dot((it).getLocation()) * sphere.getLambert();
-		pixelColor += scale * (it).getIntensity() * sphere.getColor();
+	for (unsigned int i = 0; i < lights.size(); i++) {
+		Light sLight = lights[i];
+		Ray shadow = Ray(intersection, sLight.getLocation());
+		double scale = intersection.dot(sLight.getLocation()) * obj->getLambert();
+		pixelColor += scale * sLight.getIntensity() * obj->getColor();
 	}
 
 	return pixelColor;

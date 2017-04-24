@@ -27,9 +27,9 @@ public:
 
 	// Checks if the object is intersected by a ray
 	// @param ray The ray to check for intersection with
-	// @return A Vec3 with the position of intersection, 
-	//         or (inf, inf, inf) if no intersetion
-	virtual Vec3 intersectedBy(Ray ray) const;
+	// @return The position along the ray where the intersection lies
+	//         or inf if no intersection
+	virtual double intersectedBy(Ray ray) const;
 
 protected:
 

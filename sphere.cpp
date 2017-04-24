@@ -35,7 +35,7 @@ double Sphere::getRadius() const {
 
 }
 
-Vec3 Sphere::intersectedBy(Ray ray) const {
+double Sphere::intersectedBy(Ray ray) const {
 
 	Vec3 L = ray.getOrigin() - center;
 	double a = ray.getDirection().dot(ray.getDirection());
@@ -47,9 +47,7 @@ Vec3 Sphere::intersectedBy(Ray ray) const {
 	double t0, t1;
 
 	if (delta < 0) {
-		return Vec3(std::numeric_limits<double>::infinity(),
-			std::numeric_limits<double>::infinity(),
-			std::numeric_limits<double>::infinity());
+		return std::numeric_limits<double>::infinity();
 	}
 	else if (delta == 0) {
 		t0 = -(b / (2 * a));
@@ -61,6 +59,6 @@ Vec3 Sphere::intersectedBy(Ray ray) const {
 	}
 
 	double t = (t0 < t1) ? t0 : t1;
-	return ray.getOrigin() + t * ray.getDirection();
+	return t;
 
 }

@@ -19,7 +19,7 @@ public:
 
 	double getRadius() const ;
 
-	Vec3 intersectedBy(Ray ray) const;
+	double intersectedBy(Ray ray) const;
 
 private:
 

@@ -20,21 +20,11 @@ public:
 
 	Scene();
 
-	/*~Scene();
-
-	Scene(const Scene& rhs);
-
-	Scene& operator=(const Scene& rhs);*/
-
 	double getCameraX() const;
 
 	double getCameraY() const;
 
 	void setCamera(const Camera &cameraSet);
-
-	//void addObject(Object * obj);
-
-	//void addObjects(std::vector<Object *> objs);
 
 	void addSphere(Sphere sphere);
 

@@ -23,10 +23,8 @@ double Object::getLambert() const {
 
 }
 
-Vec3 Object::intersectedBy(Ray ray) const {
+double Object::intersectedBy(Ray ray) const {
 
-	return Vec3(std::numeric_limits<double>::infinity(), 
-	            std::numeric_limits<double>::infinity(),
-	            std::numeric_limits<double>::infinity());
+	return std::numeric_limits<double>::infinity();
 
 }
