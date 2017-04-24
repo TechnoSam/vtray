@@ -83,7 +83,7 @@ int main(int argc, char * argv[]) {
 			Color color = row[j];
 			color.scale(255, chunk.max);
 			colorVal = qRgb(color.getRed(), color.getGreen(), color.getBlue());
-			image.setPixel(chunk.offsetX + j, chunk.offsetY + i, colorVal);
+			image.setPixel(chunk.offsetX + i, chunk.offsetY + j, colorVal);
 		}
 	}
 

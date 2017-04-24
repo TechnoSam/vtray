@@ -4,6 +4,7 @@
 
 #include "vec3.hpp"
 #include <math.h>
+#include <cmath>
 
 Vec3::Vec3() {
 
@@ -86,7 +87,10 @@ Vec3 Vec3::cross(const Vec3 &rhs) const {
 
 bool Vec3::operator==(const Vec3 &rhs) {
 
-	return x == rhs.x && y == rhs.y && z == rhs.z;
+	double small = 1e-6;
+	return std::abs(x - rhs.x) < small &&
+		std::abs(y - rhs.y) < small &&
+		std::abs(z - rhs.z) < small;
 
 }
 
