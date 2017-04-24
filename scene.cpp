@@ -83,9 +83,17 @@ Color Scene::pixelByTrace(int x, int y) const {
 		Ray shadow = Ray(intersection, sLight.getLocation());
 
 		if (type == "sphere") {
-			t = intersectsObject(shadow, Sphere(), Plane(), std::string());
-			if (t != std::numeric_limits<double>::infinity()) {
-				continue;
+			Sphere shSphere;
+			Plane shPlane;
+			std::string shType;
+			t = intersectsObject(shadow, shSphere, shPlane, shType);
+			double camDist = intersectsCamera(shadow);
+			if (t != std::numeric_limits<double>::infinity() && t < camDist) {
+				// If we do intersect, we need to make sure it's BEFORE it has hit the light
+				double lDist = (shadow.getDestination() - shadow.getOrigin()).magnitude();
+				if (t < lDist) {
+					continue;
+				}
 			}
 			Ray surfaceNormalRay = Ray(intSphere.getCenter(), intersection);
 			Vec3 surfaceNormalVec = surfaceNormalRay.getDirection();
@@ -96,9 +104,17 @@ Color Scene::pixelByTrace(int x, int y) const {
 			pixelColor += scale * sLight.getIntensity() * intSphere.getColor();
 		}
 		else if (type == "plane") {
-			t = intersectsObject(shadow, Sphere(), Plane(), std::string());
-			if (t != std::numeric_limits<double>::infinity()) {
-				continue;
+			Sphere shSphere;
+			Plane shPlane;
+			std::string shType;
+			t = intersectsObject(shadow, shSphere, shPlane, shType);
+			double camDist = intersectsCamera(shadow);
+			if (t != std::numeric_limits<double>::infinity() && t < camDist) {
+				// If we do intersect, we need to make sure it's BEFORE it has hit the light
+				double lDist = (shadow.getDestination() - shadow.getOrigin()).magnitude();
+				if (t < lDist) {
+					continue;
+				}
 			}
 			Vec3 surfaceNormalVec = intPlane.getNormal().normalize();
 			Ray lightRay = Ray(intersection, sLight.getLocation());
@@ -110,9 +126,6 @@ Color Scene::pixelByTrace(int x, int y) const {
 		else {
 			continue;
 		}
-		//double scale = intersection.dot(sLight.getLocation()) * objLam;
-		//scale = (scale < 0) ? 0 : scale;
-		//pixelColor += scale * sLight.getIntensity() * objColor;
 	}
 
 	return pixelColor;
@@ -144,5 +157,25 @@ double Scene::intersectsObject(Ray ray, Sphere &sphere, Plane &plane, std::strin
 	}
 
 	return t;
+
+}
+
+double Scene::intersectsCamera(Ray ray) const {
+
+	Vec3 n = camera.getNormal().normalize();
+	Vec3 l = ray.getDirection().normalize();
+	double denominator = n.dot(l);
+
+	double inf = std::numeric_limits<double>::infinity();
+
+	if (std::abs(denominator) > 1e-6) {
+		double t = ((camera.getCenter() - ray.getOrigin()).dot(n)) / denominator;
+		if (t <= 1e-6) {
+			return inf;
+		}
+		return t;
+	}
+
+	return inf;
 
 }

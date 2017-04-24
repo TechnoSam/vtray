@@ -24,6 +24,10 @@ public:
 
 	double getSizeY() const;
 
+	Vec3 getCenter() const;
+
+	Vec3 getNormal() const;
+
 	Ray pixelRay(int x, int y) const;
 
 private:

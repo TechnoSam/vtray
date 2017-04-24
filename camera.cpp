@@ -49,6 +49,18 @@ double Camera::getSizeY() const {
 
 }
 
+Vec3 Camera::getCenter() const {
+
+	return center;
+
+}
+
+Vec3 Camera::getNormal() const {
+
+	return normal;
+
+}
+
 Ray Camera::pixelRay(int x, int y) const {
 
 	Vec3 origin = focus;

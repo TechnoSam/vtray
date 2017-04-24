@@ -57,7 +57,7 @@ double Plane::intersectedBy(Ray ray) const {
 	if (std::abs(denominator) > 1e-6) {
 
 		double t = ((center - ray.getOrigin()).dot(n)) / denominator;
-		if (t <= 0) {
+		if (t <= 1e-6) {
 			return inf;
 		}
 		return t;
