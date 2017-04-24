@@ -56,7 +56,7 @@ Vec3 Plane::intersectedBy(Ray ray) const {
 	                std::numeric_limits<double>::infinity(),
 	                std::numeric_limits<double>::infinity());
 
-	if (abs(denominator) > 1e-6) {
+	if (std::abs(denominator) > 1e-6) {
 
 		double t = ((center - ray.getOrigin()).dot(n)) / denominator;
 		if (t <= 0) {

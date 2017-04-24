@@ -7,6 +7,8 @@
 
 #include "scene.hpp"
 
+#include <stdexcept>
+
 class RayTracer {
 
 public:

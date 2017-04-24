@@ -63,10 +63,10 @@ double Vec3::magnitude() const {
 
 }
 
-Vec3& Vec3::normalize() const {
+Vec3 Vec3::normalize() const {
 
 	double mag = this->magnitude();
-	return (mag == 0) ? Vec3(0, 0, 0) : *this / mag;
+	return (mag == 0) ? Vec3(0, 0, 0) : Vec3(*this / mag);
 
 }
 

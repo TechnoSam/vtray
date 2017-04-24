@@ -70,8 +70,9 @@ Color Scene::pixelByTrace(int x, int y) const {
 	Object * obj;
 
 	//for (auto it = objects.begin(); it != objects.end; it++) {
-	for (auto& it : objects) {
-		obj = (it);
+	//for (auto& it : objects) {
+	for (int i = 0; i < objects.size(); i++) {
+		obj = objects[i];
 		intersection = obj->intersectedBy(primary);
 		if (intersection != inf) {
 			break;

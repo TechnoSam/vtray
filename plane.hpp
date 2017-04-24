@@ -7,6 +7,8 @@
 
 #include "object.hpp"
 
+#include <cmath>
+
 class Plane : public Object {
 
 public:

@@ -48,7 +48,7 @@ public:
 
 	// Calculates the normalized vector as v/mag(v) where v is the vector
 	// @return The normalized vector
-	Vec3& normalize() const;
+	Vec3 normalize() const;
 
 	// Calculates the dot product with the vector and another
 	// @param rhs The vector to take the dot product with
