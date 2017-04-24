@@ -43,7 +43,7 @@ private:
 	Camera camera;
 	std::vector<Light> lights;
 
-	double Scene::intersectsObject(Ray ray, Color &objColor, double &objLam) const;
+	double Scene::intersectsObject(Ray ray, Sphere &Sphere, Plane &plane, std::string &type) const;
 
 };
 

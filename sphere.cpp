@@ -58,6 +58,16 @@ double Sphere::intersectedBy(Ray ray) const {
 		t1 = (-b - sqrt(delta)) / (2 * a);
 	}
 
+	double small = 1e-9;
+	if (t0 < small && t1 < small) {
+		return std::numeric_limits<double>::infinity();
+	}
+	if (t0 < small) {
+		return t1;
+	}
+	if (t1 < small) {
+		return t0;
+	}
 	double t = (t0 < t1) ? t0 : t1;
 	return t;
 

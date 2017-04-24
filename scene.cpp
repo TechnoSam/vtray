@@ -64,50 +64,72 @@ Color Scene::pixelByTrace(int x, int y) const {
 
 	double t;
 	Vec3 intersection;
-	Color objColor = Color();
-	double objLam = 0;
 
-	t = intersectsObject(primary, objColor, objLam);
+	Sphere intSphere;
+	Plane intPlane;
+	std::string type;
+	t = intersectsObject(primary, intSphere, intPlane, type);
 
 	intersection = primary.getOrigin() + t * primary.getDirection();
 
-	Color pixelColor = Color(0, 255, 0);
+	Color pixelColor = Color(0, 0, 0);
 
 	if (t == std::numeric_limits<double>::infinity()) {
 		return Color(0, 0, 0);
 	}
 
-	return objColor;
-
-	//for (auto it = lights.begin(); it != lights.end; it++) {
 	for (unsigned int i = 0; i < lights.size(); i++) {
 		Light sLight = lights[i];
 		Ray shadow = Ray(intersection, sLight.getLocation());
-		Color trashColor = Color();
-		double trashLam = 0;
-		t = intersectsObject(shadow, trashColor, trashLam);
-		Vec3 sInter = shadow.getOrigin() + t * shadow.getDirection();
-		if (t != std::numeric_limits<double>::infinity() && sInter != intersection) {
+
+		if (type == "sphere") {
+			t = intersectsObject(shadow, Sphere(), Plane(), std::string());
+			if (t != std::numeric_limits<double>::infinity()) {
+				continue;
+			}
+			Ray surfaceNormalRay = Ray(intSphere.getCenter(), intersection);
+			Vec3 surfaceNormalVec = surfaceNormalRay.getDirection();
+			Ray lightRay = Ray(intersection, sLight.getLocation());
+			Vec3 surfaceLightVec = lightRay.getDirection();
+
+			double scale = surfaceNormalVec.dot(surfaceLightVec) * intSphere.getLambert();
+			pixelColor += scale * sLight.getIntensity() * intSphere.getColor();
+		}
+		else if (type == "plane") {
+			t = intersectsObject(shadow, Sphere(), Plane(), std::string());
+			if (t != std::numeric_limits<double>::infinity()) {
+				continue;
+			}
+			Vec3 surfaceNormalVec = intPlane.getNormal().normalize();
+			Ray lightRay = Ray(intersection, sLight.getLocation());
+			Vec3 surfaceLightVec = lightRay.getDirection();
+
+			double scale = surfaceNormalVec.dot(surfaceLightVec) * intPlane.getLambert();
+			pixelColor += scale * sLight.getIntensity() * intPlane.getColor();
+		}
+		else {
 			continue;
 		}
-		double scale = intersection.dot(sLight.getLocation()) * objLam;
-		pixelColor += scale * sLight.getIntensity() * objColor;
+		//double scale = intersection.dot(sLight.getLocation()) * objLam;
+		//scale = (scale < 0) ? 0 : scale;
+		//pixelColor += scale * sLight.getIntensity() * objColor;
 	}
 
 	return pixelColor;
 
 }
 
-double Scene::intersectsObject(Ray ray, Color &objColor, double &objLam) const {
+double Scene::intersectsObject(Ray ray, Sphere &sphere, Plane &plane, std::string &type) const {
 
 	double intLoc;
 	double t = std::numeric_limits<double>::infinity();
+	type = "none";
 
 	for (unsigned int i = 0; i < spheres.size(); i++) {
 		intLoc = spheres[i].intersectedBy(ray);
 		if (intLoc < t) {
-			objColor = spheres[i].getColor();
-			objLam = spheres[i].getLambert();
+			sphere = spheres[i];
+			type = "sphere";
 			t = intLoc;
 		}
 	}
@@ -115,8 +137,8 @@ double Scene::intersectsObject(Ray ray, Color &objColor, double &objLam) const {
 	for (unsigned int i = 0; i < planes.size(); i++) {
 		intLoc = planes[i].intersectedBy(ray);
 		if (intLoc < t) {
-			objColor = planes[i].getColor();
-			objLam = planes[i].getLambert();
+			plane = planes[i];
+			type = "plane";
 			t = intLoc;
 		}
 	}
