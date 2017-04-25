@@ -13,6 +13,7 @@
 #include "plane.hpp"
 
 #include <vector>
+#include <string>
 
 class Scene {
 
