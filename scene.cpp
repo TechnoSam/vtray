@@ -101,6 +101,7 @@ Color Scene::pixelByTrace(int x, int y) const {
 			Vec3 surfaceLightVec = lightRay.getDirection();
 
 			double scale = surfaceNormalVec.dot(surfaceLightVec) * intSphere.getLambert();
+			scale = (scale < 0) ? 0 : scale;
 			pixelColor += scale * sLight.getIntensity() * intSphere.getColor();
 		}
 		else if (type == "plane") {
@@ -116,11 +117,23 @@ Color Scene::pixelByTrace(int x, int y) const {
 					continue;
 				}
 			}
-			Vec3 surfaceNormalVec = intPlane.getNormal().normalize();
+			double angleDet = intPlane.getNormal().dot(shadow.getDirection());
+			//Vec3 surfaceNormalVec = (angleDet < 0) ? 0 - intPlane.getNormal().normalize() :;
+			Vec3 surfaceNormalVec;
+			if (angleDet < 0) {
+				surfaceNormalVec.setX(0 - intPlane.getNormal().getX());
+				surfaceNormalVec.setY(0 - intPlane.getNormal().getY());
+				surfaceNormalVec.setZ(0 - intPlane.getNormal().getZ());
+				surfaceNormalVec = surfaceNormalVec.normalize();
+			}
+			else {
+				surfaceNormalVec = intPlane.getNormal().normalize();
+			}
 			Ray lightRay = Ray(intersection, sLight.getLocation());
 			Vec3 surfaceLightVec = lightRay.getDirection();
 
 			double scale = surfaceNormalVec.dot(surfaceLightVec) * intPlane.getLambert();
+			scale = (scale < 0) ? 0 : scale;
 			pixelColor += scale * sLight.getIntensity() * intPlane.getColor();
 		}
 		else {
