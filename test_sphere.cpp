@@ -35,18 +35,16 @@ TEST_CASE("Tests the sphere intersection", "[sphere]") {
 	Ray intersect = Ray(Vec3(-3, 4, 2), Vec3(-2, 3, 2));
 	Ray noIntersect = Ray(Vec3(-2, -2, 3), Vec3(-1, -3, 3));
 
-	/*Vec3 iResult1 = sph.intersectedBy(intersect);
-	Vec3 iResult2 = obj.intersectedBy(intersect);
-	Vec3 iResult3 = sph.intersectedBy(noIntersect);
-	Vec3 iResult4 = obj.intersectedBy(noIntersect);
+	double iResult1 = sph.intersectedBy(intersect);
+	double iResult2 = obj.intersectedBy(intersect);
+	double iResult3 = sph.intersectedBy(noIntersect);
+	double iResult4 = obj.intersectedBy(noIntersect);
 
-	Vec3 inf = Vec3(std::numeric_limits<double>::infinity(),
-	                std::numeric_limits<double>::infinity(),
-	                std::numeric_limits<double>::infinity());
+	double inf = std::numeric_limits<double>::infinity();
 
 	REQUIRE(iResult1 != inf);
 	REQUIRE(iResult2 != inf);
 	REQUIRE(iResult3 == inf);
-	REQUIRE(iResult4 == inf);*/
+	REQUIRE(iResult4 == inf);
 
 }

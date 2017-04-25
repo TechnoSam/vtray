@@ -1,3 +1,4 @@
 .vagrant/*
 *.log
-test.png
+*.png
+Coverage_Report/
