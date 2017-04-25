@@ -17,6 +17,9 @@ TEST_CASE("Tests the camera constructors", "[camera]") {
 	REQUIRE(customCamera.getSizeX() == 256);
 	REQUIRE(customCamera.getSizeY() == 256);
 
+	REQUIRE(customCamera.getCenter() == Vec3(1, 1, 1));
+	REQUIRE(customCamera.getNormal() == Vec3(0, 0, 1));
+
 }
 
 TEST_CASE("Tests the camera pixel ray generation", "[camera]") {

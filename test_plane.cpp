@@ -27,6 +27,18 @@ TEST_CASE("Tests the Plane constructors", "[plane]") {
 	REQUIRE(test == Vec3(5, 5, 5));
 	test = pl1.getNormal();
 	REQUIRE(test == Vec3(0, 0, 1));
+
+	// Extra
+	pl1.setCenter(Vec3(0, 0, 0));
+	pl1.setNormal(Vec3(0, 0, 0));
+	test = pl1.getCenter();
+	REQUIRE(test == Vec3(0, 0, 0));
+	test = pl1.getNormal();
+	REQUIRE(test == Vec3(0, 0, 0));
+
+	// Also test object because I'm lazy
+	Object obj = Object();
+	REQUIRE(obj.intersectedBy(Ray()) == std::numeric_limits<double>::infinity());
 	
 }
 
