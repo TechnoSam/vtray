@@ -99,9 +99,9 @@ Ray Camera::pixelRay(int x, int y) const {
 		cost + pow(uz, 2) * (1 - cost)
 	};
 
-	rotateX = defaultX * rotationMatrix[1][1] + defaultY * rotationMatrix[2][1] + defaultZ * rotationMatrix[3][1];
-	rotateY = defaultX * rotationMatrix[1][2] + defaultY * rotationMatrix[2][2] + defaultZ * rotationMatrix[3][2];
-	rotateZ = defaultX * rotationMatrix[1][3] + defaultY * rotationMatrix[2][3] + defaultZ * rotationMatrix[3][3];
+	rotateX = defaultX * rotationMatrix[0][0] + defaultY * rotationMatrix[1][0] + defaultZ * rotationMatrix[2][0];
+	rotateY = defaultX * rotationMatrix[0][1] + defaultY * rotationMatrix[1][1] + defaultZ * rotationMatrix[2][1];
+	rotateZ = defaultX * rotationMatrix[0][2] + defaultY * rotationMatrix[1][2] + defaultZ * rotationMatrix[2][2];
 
 	Vec3 dest = Vec3(rotateX, rotateY, rotateZ);
 
