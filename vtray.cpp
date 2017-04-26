@@ -6,9 +6,12 @@
 #include "sphere.hpp"
 #include "plane.hpp"
 
+#include "message_queue.h"
+
 #include <string>
 #include <iostream>
 #include <stdexcept>
+#include <thread>
 
 #include <qjsonarray.h>
 #include <qjsondocument.h>
@@ -19,7 +22,15 @@
 
 #include "qdebug.h"
 
+typedef struct {
+	int startX;
+	int endX;
+	int startY;
+	int endY;
+} Job;
+
 Scene sceneFromJson(const QJsonObject &json);
+void threadWorker(const RayTracer &rt, message_queue<Job> * in, message_queue<RayTracer::ImageChunk> * out);
 
 int main(int argc, char * argv[]) {
 
@@ -31,16 +42,21 @@ int main(int argc, char * argv[]) {
 	int numThreads;
 
 	if (argc == 5) {
-		if (argv[1] != "-t") {
+		std::string tString = argv[1];
+		if (tString != "-t") {
 			std::cerr << usage;
 			return EXIT_FAILURE;
 		}
 		numThreads = std::atoi(argv[2]);
+		if (numThreads < 1) {
+			std::cerr << "Cannot use less than 1 thread\n";
+			return EXIT_FAILURE;
+		}
 		jsonFileName = argv[3];
 		pngFileName = argv[4];
 	}
 	else if (argc == 3) {
-		numThreads = 0;
+		numThreads = 1;
 		jsonFileName = argv[1];
 		pngFileName = argv[2];
 	}
@@ -72,6 +88,37 @@ int main(int argc, char * argv[]) {
 	RayTracer rt = RayTracer(scene);
 	QRgb colorVal;
 
+	std::vector<std::thread> threads;
+	message_queue<Job> in;
+	message_queue<RayTracer::ImageChunk> out;
+	for (int i = 0; i < numThreads; i++) {
+		threads.emplace_back(std::thread(&threadWorker, rt, &in, &out));
+	}
+
+	int width = scene.getCameraX();
+	int height = scene.getCameraY();
+	int chunkW = 4;
+	int chunkH = 2;
+	for (int i = 0; i < chunkW; i++) {
+		Job job;
+		job.startX = i * width / chunkW;
+		job.endX = (i == chunkW - 1) ? job.startX + width / chunkW + width % chunkW - 1 : job.startX + width / chunkW - 1;
+		for (int j = 0; j < chunkH; j++) {
+			job.startY = j * height / chunkH;
+			job.endY = (j == chunkH - 1) ? job.startY + height / chunkH + height % chunkH - 1 : job.startY + height / chunkH - 1;
+			in.push(job);
+		}
+	}
+
+	for (int i = 0; i < numThreads; i++) {
+		Job job; job.startX = -1; job.endX = -1; job.startY = -1; job.endY = -1;
+		in.push(job);
+	}
+
+	for (int i = 0; i < numThreads; i++) {
+		threads[i].join();
+	}
+
 	// Render the whole thing in the main thread
 	RayTracer::ImageChunk chunk = rt.renderChunk(0, scene.getCameraX() - 1, 0, scene.getCameraY() - 1);
 
@@ -90,6 +137,20 @@ int main(int argc, char * argv[]) {
 	image.save(QString::fromStdString(pngFileName), 0, -1);
 
 	return EXIT_SUCCESS;
+
+}
+
+void threadWorker(const RayTracer &rt, message_queue<Job> * in, message_queue<RayTracer::ImageChunk> * out) {
+
+	Job job;
+	while (true) {
+		in->wait_and_pop(job);
+		if (job.startX == -1 && job.endX == -1 && job.startY == -1 && job.endY == -1) {
+			return;
+		}
+
+		std::cout << job.startX << " " << job.endX << " " << job.startY << " " << job.endY << "\n";
+	}
 
 }
 
