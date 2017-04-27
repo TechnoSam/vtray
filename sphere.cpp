@@ -49,7 +49,7 @@ double Sphere::intersectedBy(Ray ray) const {
 	if (delta < 0) {
 		return std::numeric_limits<double>::infinity();
 	}
-	else if (delta == 0) {
+	if (delta == 0) {
 		t0 = -(b / (2 * a));
 		t1 = t0;
 	}

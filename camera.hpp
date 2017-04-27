@@ -17,7 +17,7 @@ public:
 
 	Camera();
 
-	Camera(const Vec3 &center, const Vec3 &normal, double focusCon, double sizeXCon, double sizeYCon,
+	Camera(const Vec3 &cenCon, const Vec3 &normCon, double focusCon, double sizeXCon, double sizeYCon,
 		double resXCon, double resYCon);
 
 	double getSizeX() const;

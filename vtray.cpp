@@ -31,37 +31,16 @@ typedef struct {
 
 Scene sceneFromJson(const QJsonObject &json);
 void threadWorker(const RayTracer &rt, message_queue<Job> * in, message_queue<RayTracer::ImageChunk> * out);
+int parseArgs(int argc, char * argv[], std::string &jsonFileName, std::string &pngFileName, int &numThreads);
+void addJobs(message_queue<Job> * in, const Scene &scene);
+void saveImage(message_queue<RayTracer::ImageChunk> * out, const Scene &scene, std::string pngFileName);
 
 int main(int argc, char * argv[]) {
-
-	// Lazy hard-coding
-	std::string usage = "ERROR usage: vtray [-t <num_threads>] "
-		"<scene.json> <scene.png\n";
 
 	std::string jsonFileName, pngFileName;
 	int numThreads;
 
-	if (argc == 5) {
-		std::string tString = argv[1];
-		if (tString != "-t") {
-			std::cerr << usage;
-			return EXIT_FAILURE;
-		}
-		numThreads = std::atoi(argv[2]);
-		if (numThreads < 1) {
-			std::cerr << "Cannot use less than 1 thread\n";
-			return EXIT_FAILURE;
-		}
-		jsonFileName = argv[3];
-		pngFileName = argv[4];
-	}
-	else if (argc == 3) {
-		numThreads = 1;
-		jsonFileName = argv[1];
-		pngFileName = argv[2];
-	}
-	else {
-		std::cerr << usage;
+	if (parseArgs(argc, argv, jsonFileName, pngFileName, numThreads) == EXIT_FAILURE) {
 		return EXIT_FAILURE;
 	}
 
@@ -86,7 +65,6 @@ int main(int argc, char * argv[]) {
 		return EXIT_FAILURE;
 	}
 	RayTracer rt = RayTracer(scene);
-	QRgb colorVal;
 
 	std::vector<std::thread> threads;
 	message_queue<Job> in;
@@ -95,20 +73,7 @@ int main(int argc, char * argv[]) {
 		threads.emplace_back(std::thread(&threadWorker, rt, &in, &out));
 	}
 
-	int width = scene.getCameraX();
-	int height = scene.getCameraY();
-	int chunkW = 4;
-	int chunkH = 2;
-	for (int i = 0; i < chunkW; i++) {
-		Job job;
-		job.startX = i * width / chunkW;
-		job.endX = (i == chunkW - 1) ? job.startX + width / chunkW + width % chunkW - 1 : job.startX + width / chunkW - 1;
-		for (int j = 0; j < chunkH; j++) {
-			job.startY = j * height / chunkH;
-			job.endY = (j == chunkH - 1) ? job.startY + height / chunkH + height % chunkH - 1 : job.startY + height / chunkH - 1;
-			in.push(job);
-		}
-	}
+	addJobs(&in, scene);
 
 	for (int i = 0; i < numThreads; i++) {
 		Job job; job.startX = -1; job.endX = -1; job.startY = -1; job.endY = -1;
@@ -119,22 +84,7 @@ int main(int argc, char * argv[]) {
 		threads[i].join();
 	}
 
-	// Render the whole thing in the main thread
-	RayTracer::ImageChunk chunk = rt.renderChunk(0, scene.getCameraX() - 1, 0, scene.getCameraY() - 1);
-
-	QImage image(scene.getCameraX(), scene.getCameraY(), QImage::Format_RGB32);
-
-	for (unsigned int i = 0; i < chunk.image.size(); i++) {
-		auto row = chunk.image[i];
-		for (unsigned int j = 0; j < row.size(); j++) {
-			Color color = row[j];
-			color.scale(255, chunk.max);
-			colorVal = qRgb(color.getRed(), color.getGreen(), color.getBlue());
-			image.setPixel(chunk.offsetX + i, chunk.offsetY + j, colorVal);
-		}
-	}
-
-	image.save(QString::fromStdString(pngFileName), 0, -1);
+	saveImage(&out, scene, pngFileName);
 
 	return EXIT_SUCCESS;
 
@@ -149,8 +99,95 @@ void threadWorker(const RayTracer &rt, message_queue<Job> * in, message_queue<Ra
 			return;
 		}
 
-		std::cout << job.startX << " " << job.endX << " " << job.startY << " " << job.endY << "\n";
+		out->push(rt.renderChunk(job.startX, job.endX, job.startY, job.endY));
 	}
+
+}
+
+int parseArgs(int argc, char * argv[], std::string &jsonFileName, std::string &pngFileName, int &numThreads) {
+
+	std::string usage = "ERROR usage: vtray [-t <num_threads>] <scene.json> <scene.png\n";
+	if (argc == 5) {
+		std::string tString = argv[1];
+		if (tString != "-t") {
+			std::cerr << usage;
+			return EXIT_FAILURE;
+		}
+		numThreads = std::atoi(argv[2]);
+		if (numThreads < 1) {
+			std::cerr << "Cannot use less than 1 thread\n";
+			return EXIT_FAILURE;
+		}
+		jsonFileName = argv[3];
+		pngFileName = argv[4];
+		return 0;
+	}
+	if (argc == 3) {
+		numThreads = 1;
+		jsonFileName = argv[1];
+		pngFileName = argv[2];
+		return 0;
+	}
+	std::cerr << usage;
+	return EXIT_FAILURE;
+
+}
+
+void addJobs(message_queue<Job> * in, const Scene &scene) {
+
+	int width = scene.getCameraX();
+	int height = scene.getCameraY();
+	int chunkW = 4;
+	int chunkH = 2;
+	for (int i = 0; i < chunkW; i++) {
+		Job job;
+		job.startX = i * width / chunkW;
+		job.endX = (i == chunkW - 1) ? job.startX + width / chunkW + width % chunkW - 1 : job.startX + width / chunkW - 1;
+		for (int j = 0; j < chunkH; j++) {
+			job.startY = j * height / chunkH;
+			job.endY = (j == chunkH - 1) ? job.startY + height / chunkH + height % chunkH - 1 : job.startY + height / chunkH - 1;
+			in->push(job);
+		}
+	}
+
+}
+
+void saveImage(message_queue<RayTracer::ImageChunk> * out, const Scene &scene, std::string pngFileName) {
+
+	QImage image(scene.getCameraX(), scene.getCameraY(), QImage::Format_RGB32);
+
+	QRgb colorVal;
+
+	std::vector<RayTracer::ImageChunk> chunks;
+	Color globalMax = Color();
+	while (!out->empty()) {
+		RayTracer::ImageChunk chunk;
+		out->wait_and_pop(chunk);
+		chunks.push_back(chunk);
+		if (chunk.max.getRed() > globalMax.getRed()) {
+			globalMax.setRed(chunk.max.getRed());
+		}
+		if (chunk.max.getGreen() > globalMax.getGreen()) {
+			globalMax.setGreen(chunk.max.getGreen());
+		}
+		if (chunk.max.getBlue() > globalMax.getBlue()) {
+			globalMax.setBlue(chunk.max.getBlue());
+		}
+	}
+
+	for (auto chunk : chunks) {
+		for (unsigned int i = 0; i < chunk.image.size(); i++) {
+			auto row = chunk.image[i];
+			for (unsigned int j = 0; j < row.size(); j++) {
+				Color color = row[j];
+				color.scale(255, globalMax);
+				colorVal = qRgb(color.getRed(), color.getGreen(), color.getBlue());
+				image.setPixel(chunk.offsetX + i, chunk.offsetY + j, colorVal);
+			}
+		}
+	}
+
+	image.save(QString::fromStdString(pngFileName), 0, -1);
 
 }
 
