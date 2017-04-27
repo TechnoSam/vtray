@@ -55,33 +55,19 @@ void Scene::addLights(std::vector<Light> lights) {
 }
 
 Color Scene::pixelByTrace(int x, int y) const {
-
 	Ray primary = camera.pixelRay(x, y);
-
-	Vec3 inf = Vec3(std::numeric_limits<double>::infinity(),
-		std::numeric_limits<double>::infinity(),
-		std::numeric_limits<double>::infinity());
-
 	double t;
 	Vec3 intersection;
-
 	Sphere intSphere;
 	Plane intPlane;
 	std::string type;
 	t = intersectsObject(primary, intSphere, intPlane, type);
-
 	intersection = primary.getOrigin() + t * primary.getDirection();
-
 	Color pixelColor = Color(0, 0, 0);
-
-	if (t == std::numeric_limits<double>::infinity()) {
-		return Color(0, 0, 0);
-	}
-
+	if (t == std::numeric_limits<double>::infinity()) {return Color(0, 0, 0);}
 	for (unsigned int i = 0; i < lights.size(); i++) {
 		Light sLight = lights[i];
 		Ray shadow = Ray(intersection, sLight.getLocation());
-
 		if (type == "sphere") {
 			Sphere shSphere;
 			Plane shPlane;
@@ -89,17 +75,13 @@ Color Scene::pixelByTrace(int x, int y) const {
 			t = intersectsObject(shadow, shSphere, shPlane, shType);
 			double camDist = intersectsCamera(shadow);
 			if (t != std::numeric_limits<double>::infinity() && t < camDist) {
-				// If we do intersect, we need to make sure it's BEFORE it has hit the light
 				double lDist = (shadow.getDestination() - shadow.getOrigin()).magnitude();
-				if (t < lDist) {
-					continue;
-				}
+				if (t < lDist) {continue;}
 			}
 			Ray surfaceNormalRay = Ray(intSphere.getCenter(), intersection);
 			Vec3 surfaceNormalVec = surfaceNormalRay.getDirection();
 			Ray lightRay = Ray(intersection, sLight.getLocation());
 			Vec3 surfaceLightVec = lightRay.getDirection();
-
 			double scale = surfaceNormalVec.dot(surfaceLightVec) * intSphere.getLambert();
 			scale = (scale < 0) ? 0 : scale;
 			pixelColor += scale * sLight.getIntensity() * intSphere.getColor();
@@ -111,14 +93,10 @@ Color Scene::pixelByTrace(int x, int y) const {
 			t = intersectsObject(shadow, shSphere, shPlane, shType);
 			double camDist = intersectsCamera(shadow);
 			if (t != std::numeric_limits<double>::infinity() && t < camDist) {
-				// If we do intersect, we need to make sure it's BEFORE it has hit the light
 				double lDist = (shadow.getDestination() - shadow.getOrigin()).magnitude();
-				if (t < lDist) {
-					continue;
-				}
+				if (t < lDist) {continue;}
 			}
 			double angleDet = intPlane.getNormal().dot(shadow.getDirection());
-			//Vec3 surfaceNormalVec = (angleDet < 0) ? 0 - intPlane.getNormal().normalize() :;
 			Vec3 surfaceNormalVec;
 			if (angleDet < 0) {
 				surfaceNormalVec.setX(0 - intPlane.getNormal().getX());
@@ -126,23 +104,16 @@ Color Scene::pixelByTrace(int x, int y) const {
 				surfaceNormalVec.setZ(0 - intPlane.getNormal().getZ());
 				surfaceNormalVec = surfaceNormalVec.normalize();
 			}
-			else {
-				surfaceNormalVec = intPlane.getNormal().normalize();
-			}
+			else {surfaceNormalVec = intPlane.getNormal().normalize();}
 			Ray lightRay = Ray(intersection, sLight.getLocation());
 			Vec3 surfaceLightVec = lightRay.getDirection();
-
 			double scale = surfaceNormalVec.dot(surfaceLightVec) * intPlane.getLambert();
 			scale = (scale < 0) ? 0 : scale;
 			pixelColor += scale * sLight.getIntensity() * intPlane.getColor();
 		}
-		else {
-			continue;
-		}
+		else {continue;}
 	}
-
 	return pixelColor;
-
 }
 
 double Scene::intersectsObject(Ray ray, Sphere &sphere, Plane &plane, std::string &type) const {
