@@ -1,10 +1,12 @@
-NOTES:
+FIXES SINCE THE BETA:
 
-On Linux, correct operation is RANDOM. I cannot figure out why this is.
-Most of the time it works, but sometimes it just doesn't.
+Memory issues. Was accessing a 3x3 array at element 3. Windows set this
+value to 0, Linux left it uninitialized. This caused my random issues
+from before and my failing the memory tests.
 
-The camera clipping felt exceptionally sneaky. Caused a lot of problems
-and fundamentally doesn't make sense.
+Lighting issues. Planes allowed light in from the opposite side relative
+to the camera. This did not affect spheres, but it made planes brighter
+than they should have been.
 
 Modules:
 
