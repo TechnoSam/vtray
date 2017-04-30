@@ -96,16 +96,13 @@ Color Scene::pixelByTrace(int x, int y) const {
 				double lDist = (shadow.getDestination() - shadow.getOrigin()).magnitude();
 				if (t < lDist) {continue;}
 			}
-			double angleDet = intPlane.getNormal().dot(shadow.getDirection());
+			double angleDet = intPlane.getNormal().dot(primary.getDirection());
 			Vec3 surfaceNormalVec;
 			if (angleDet < 0) {
-				surfaceNormalVec.setX(0 - intPlane.getNormal().getX());
-				surfaceNormalVec.setY(0 - intPlane.getNormal().getY());
-				surfaceNormalVec.setZ(0 - intPlane.getNormal().getZ());
-				surfaceNormalVec = surfaceNormalVec.normalize();
+				surfaceNormalVec = intPlane.getNormal().normalize() * -1;
 			}
 			else {surfaceNormalVec = intPlane.getNormal().normalize();}
-			Ray lightRay = Ray(intersection, sLight.getLocation());
+			Ray lightRay = Ray(sLight.getLocation(), intersection);
 			Vec3 surfaceLightVec = lightRay.getDirection();
 			double scale = surfaceNormalVec.dot(surfaceLightVec) * intPlane.getLambert();
 			scale = (scale < 0) ? 0 : scale;
